@@ -13,7 +13,7 @@ const db = new sqlite3.Database("chatbot.db", (err) => {
 
 // Create tables
 db.serialize(() => {
-    db.run("CREATE TABLE IF NOT EXISTS users (user_id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT UNIQUE)");
+    db.run("CREATE TABLE IF NOT EXISTS users (user_id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT UNIQUE, password TEXT)");
     db.run(`CREATE TABLE IF NOT EXISTS chat_history (
         chat_id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id INTEGER,
@@ -37,12 +37,17 @@ for (const [query, response] of Object.entries(predefinedResponses)) {
     db.run("INSERT OR IGNORE INTO cache (query, response) VALUES (?, ?)", [query, response]);
 }
 
-// User sign-in
 app.post("/signin", (req, res) => {
-    const { username } = req.body;
-    db.run("INSERT OR IGNORE INTO users (username) VALUES (?)", [username], function (err) {
+    console.log("Received sign-in request:", req.body);
+    if (!req.body.username || !req.body.password) { 
+        return res.status(400).json({ error: "Username and password are required!" });
+    }
+    const { username, password } = req.body;
+    db.get("SELECT * FROM users WHERE username = ? AND password = ?", [username, password], (err, row) => {
         if (err) return res.status(500).json({ error: err.message });
-        res.json({ user_id: this.lastID, message: "Signed in successfully!" });
+        if (!row) return res.status(401).json({ error: "Invalid credentials!" });
+        else console.log("User found:", row);
+        res.json({ user_id: row.user_id, message: "Sign-in successful!" });
     });
 });
 
@@ -84,5 +89,23 @@ app.get("/recommendations/:user_id", (req, res) => {
         res.json({ recommendation });
     });
 });
+app.post("/signup", (req, res) => {
+    console.log("Received signup request:", req.body);
+    if (!req.body.username || !req.body.password) {
+        return res.status(400).json({ error: "Username and password are required!" });
+    }
+    const { username, password } = req.body;
+
+    console.log("Inserting into database:", { username, password });
+
+    db.run("INSERT INTO users (username, password) VALUES (?, ?)", [username, password], function (err) {
+        if (err) {
+            console.error("Database error:", err.message);
+            return res.status(500).json({ error: err.message });
+        }
+        res.json({ user_id: this.lastID, message: "User created successfully!" });
+    });
+});
+
 
 app.listen(3000, () => console.log("Server running on port 3000"));
