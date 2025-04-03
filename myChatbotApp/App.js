@@ -13,16 +13,16 @@ export default function App() {
   return (
     <>
     <NavigationContainer>
-    <Stack.Navigator >
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name = "login">
+      <Stack.Screen name="login">
         {props => <LoginScreen {...props} setUserId={setUserId} />}
       </Stack.Screen>
-      <Stack.Screen name="SignUp" component={SignupScreen}/>
+      <Stack.Screen name="SignUp" component={SignupScreen} />
       <Stack.Screen name="Chatbot">
         {props => <Chatbot {...props} userId={userId} />}
       </Stack.Screen>
-      </Stack.Navigator>
+    </Stack.Navigator>
     </NavigationContainer>
     </>
   );

@@ -43,6 +43,7 @@ export default function HomePage() {
 
 const styles = StyleSheet.create({
   container: {
+    marginTop: 50,
     flex: 1,
     backgroundColor: '#27445D', // Deep blue background
     justifyContent: 'center', // Center everything vertically
