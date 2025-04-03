@@ -14,7 +14,7 @@ const SignUpScreen = () => {
       let username = email;  
       try {
         // Send data to backend API
-        const response = await fetch('http://localhost:3000/signup', {
+        const response = await fetch('http://192.168.100.61:3000/signup', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

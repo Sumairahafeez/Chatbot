@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-
-const SignInScreen = () => {
+import { useNavigation } from '@react-navigation/native';
+const SignInScreen = ({setUserId}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigation = useNavigation(); // Use navigation prop to navigate between screens
 
   const handleSignIn = async (e) => {
     e.preventDefault(); // Prevent default form submission behavior
@@ -14,7 +15,7 @@ const SignInScreen = () => {
     }
     let username = email
     try {
-      const response = await fetch('http://localhost:3000/signin', {  // Adjust the URL for production
+      const response = await fetch('http://192.168.100.61:3000/signin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -24,21 +25,19 @@ const SignInScreen = () => {
 
       const data = await response.json();
       if (response.ok) {
-        // Handle success (e.g., navigate to the next screen or store user data)
         console.log('Sign-In Successful:', data);
         Alert.alert('Sign In Success', data.message);
+        setUserId(data.user_id); // Set user ID in state
+        navigation.navigate('Chatbot'); 
       } else {
-        // Handle errors (e.g., invalid credentials)
         Alert.alert('Error', data.error || 'Something went wrong!');
       }
     } catch (error) {
-      // Handle network or server errors
       Alert.alert('Error', 'Network or server error');
     }
   };
 
   const handleForgotPassword = () => {
-    // Navigate to forgot password screen or show alert
     Alert.alert('Forgot Password', 'Password reset link sent!');
   };
 
@@ -75,15 +74,15 @@ const SignInScreen = () => {
         <Text style={styles.socialAccountTitle}>Or Sign in with</Text>
         <View style={styles.socialAccounts}>
           <TouchableOpacity style={styles.socialButton}>
-            {/* Google icon */}
+            
             <Text style={styles.socialIcon}>G</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.socialButton}>
-            {/* Apple icon */}
+            
             <Text style={styles.socialIcon}>A</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.socialButton}>
-            {/* Twitter icon */}
+            
             <Text style={styles.socialIcon}>T</Text>
           </TouchableOpacity>
         </View>

@@ -27,9 +27,9 @@ db.serialize(() => {
 
 // Predefined cache responses (related to a website)
 const predefinedResponses = {
-    "What is this website about?": "This website provides information about AI-powered chatbots.",
-    "How can I use the chatbot?": "You can type your question, and the chatbot will respond instantly!",
-    "What services do you offer?": "We offer AI chatbot solutions, API integration, and customer support automation.",
+    "What is this website about": "This website provides information about AI-powered chatbots.",
+    "How can I use the chatbot": "You can type your question, and the chatbot will respond instantly!",
+    "What services do you offer": "We offer AI chatbot solutions, API integration, and customer support automation.",
 };
 
 // Fill cache with predefined responses
@@ -53,19 +53,23 @@ app.post("/signin", (req, res) => {
 
 // Chatbot API (uses cache responses only)
 app.post("/chatbot", (req, res) => {
-    const { user_id, query } = req.body;
+    console.log("Received chat request:", req.body);
+    const { user_id,query } = req.body;
 
     db.get("SELECT response FROM cache WHERE query = ?", [query], (err, row) => {
         if (row) {
             saveChatHistory(user_id, query, row.response);
+            console.log("Cache hit:", row.response);
             return res.json({ response: row.response });
         }
+        console.log("Cache miss for query:", query);
         res.json({ response: "I am not sure how to answer that. Try asking something else!" });
     });
 });
 
 function saveChatHistory(user_id, query, response) {
     db.run("INSERT INTO chat_history (user_id, query, response) VALUES (?, ?, ?)", [user_id, query, response]);
+    console.log("Chat history saved:", { user_id, query, response });
 }
 
 // Fetch chat history
