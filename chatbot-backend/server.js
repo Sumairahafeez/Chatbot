@@ -16,7 +16,7 @@ const db = new sqlite3.Database("chatbot.db", (err) => {
 
 // Create tables
 db.serialize(() => {
-    db.run("DELETE TABLE cache")
+    db.run("DROP TABLE IF EXISTS cache")
     db.run("CREATE TABLE IF NOT EXISTS users (user_id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT UNIQUE, password TEXT)");
     db.run(`CREATE TABLE IF NOT EXISTS chat_history (
         chat_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -29,16 +29,31 @@ db.serialize(() => {
     db.run("CREATE TABLE IF NOT EXISTS cache (query TEXT PRIMARY KEY, response TEXT, stemmed_query TEXT)");
 });
 
-// Predefined cache responses (related to a website)
 const predefinedResponses = {
     "What is this website about": "This website provides information about AI-powered chatbots.",
     "How can I use the chatbot": "You can type your question, and the chatbot will respond instantly!",
     "What services do you offer": "We offer AI chatbot solutions, API integration, and customer support automation.",
+    "What is artificial intelligence": "Artificial Intelligence (AI) refers to the simulation of human intelligence in machines that are programmed to think and learn like humans.",
+    "Can I integrate the chatbot into my website": "Yes, we offer integration services to easily embed our chatbot into your website or app.",
+    "What is NLP": "Natural Language Processing (NLP) is a field of AI that focuses on the interaction between computers and humans through natural language.",
+    "How does the chatbot work": "Our chatbot uses AI and NLP techniques to understand and respond to your queries in real-time.",
+    "Is the chatbot customizable": "Yes, the chatbot can be customized to meet your specific business needs, including personalized responses and integration with your services.",
+    "What are the benefits of using a chatbot": "Chatbots can enhance customer support, improve engagement, reduce operational costs, and provide 24/7 availability.",
+    "How secure is the chatbot": "Our chatbot is designed with security in mind, and we follow best practices to ensure the privacy and safety of your data.",
+    "Can the chatbot handle multiple languages": "Yes, our chatbot supports multiple languages and can be trained to understand different language patterns.",
+    "Do you provide analytics for chatbot interactions": "Yes, we offer detailed analytics on chatbot performance, including user interactions, response times, and common queries.",
+    "What industries do you serve": "We provide chatbot solutions for various industries, including e-commerce, healthcare, finance, education, and customer service.",
+    "How can I contact support": "You can contact our support team by sending an email to support@chatbot.com or through the contact form on our website.",
+    "Is there a trial version of the chatbot": "Yes, we offer a free trial of our chatbot service. Feel free to try it out and see how it works for your business.",
+    "How do I get started with the chatbot": "To get started, simply sign up on our platform, and our team will guide you through the setup process."
 };
+
 
 // Fill cache with predefined responses
 for (const [query, response] of Object.entries(predefinedResponses)) {
-    db.run("INSERT OR IGNORE INTO cache (query, response) VALUES (?, ?)", [query, response]);
+    let stem = getRootWord(query);
+    console.log("Inserting into cache:", { query, response, stem });
+    db.run("INSERT OR IGNORE INTO cache (query, response,stemmed_query) VALUES (?, ?,?)", [query, response, stem]);
 }
 
 app.post("/signin", (req, res) => {
@@ -97,20 +112,59 @@ app.get("/history/:user_id", (req, res) => {
     });
 });
 
-// Basic recommendation system
+// Advanced recommendation system
 app.get("/recommendations/:user_id", (req, res) => {
     console.log("Fetching recommendations for user:", req.params.user_id);
-    db.get("SELECT query FROM chat_history WHERE user_id = ? ORDER BY timestamp DESC LIMIT 1", [req.params.user_id], (err, row) => {
-        if (!row) return res.json({ recommendation: "Ask about our chatbot services!" });
-        const lastQuery = row.query.toLowerCase();
 
+    // Fetch the user's last 5 queries (or more if needed)
+    db.all("SELECT query FROM chat_history WHERE user_id = ? ORDER BY timestamp DESC LIMIT 5", [req.params.user_id], (err, rows) => {
+        if (err) {
+            console.error("Error fetching query history:", err);
+            return res.status(500).json({ error: "Failed to fetch recommendations" });
+        }
+
+        // If no history, return a default recommendation
+        if (rows.length === 0) {
+            return res.json({ recommendation: "Ask about our chatbot services!" });
+        }
+
+        // Analyze the query history
+        let queryHistory = rows.map(row => row.query.toLowerCase());
         let recommendation = "Explore more about AI chatbots!";
-        if (lastQuery.includes("chatbot")) recommendation = "Try asking about chatbot development!";
-        else if (lastQuery.includes("services")) recommendation = "Want to know about our pricing?";
+        
+        // Define keywords for categorization
+        const categories = {
+            chatbot: ["chatbot", "development", "bot", "AI chatbot"],
+            services: ["services", "pricing", "features", "plan"],
+            technology: ["technology", "AI", "machine learning", "artificial intelligence"],
+            support: ["support", "help", "assistance", "customer service"]
+        };
 
+        // Check if any of the previous queries match a category and provide recommendations
+        for (let category in categories) {
+            const categoryKeywords = categories[category];
+            for (let keyword of categoryKeywords) {
+                if (queryHistory.some(query => query.includes(keyword))) {
+                    if (category === "chatbot") {
+                        recommendation = "Try asking about chatbot development!";
+                    } else if (category === "services") {
+                        recommendation = "Want to know about our pricing?";
+                    } else if (category === "technology") {
+                        recommendation = "Explore more about machine learning and AI!";
+                    } else if (category === "support") {
+                        recommendation = "Need assistance? Ask about customer support!";
+                    }
+                    break;
+                }
+            }
+            if (recommendation !== "Explore more about AI chatbots!") break; // Stop if a match is found
+        }
+
+        // Return the recommendation
         res.json({ recommendation });
     });
 });
+
 app.post("/signup", (req, res) => {
     console.log("Received signup request:", req.body);
     if (!req.body.username || !req.body.password) {
