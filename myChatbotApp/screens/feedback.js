@@ -112,6 +112,7 @@ const FeedbackScreen = ({userId}) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        marginTop: 20,
         backgroundColor: '#27391C',
         padding: 20,
     },

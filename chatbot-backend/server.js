@@ -31,6 +31,8 @@ db.serialize(() => {
 
 });
 const predefinedResponses = {
+    "hi": "Hello! How can I assist you today?",
+    "hello": "Hi there! How can I help you?",
     "What is this website about": "This website provides information about AI-powered chatbots.",
     "How can I use the chatbot": "You can type your question, and the chatbot will respond instantly!",
     "What services do you offer": "We offer AI chatbot solutions, API integration, and customer support automation.",

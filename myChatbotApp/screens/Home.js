@@ -8,7 +8,8 @@ import ChatIcon from '../assets/chat.png';
 import AIIcon from '../assets/ai.png';
 import HistoryIcon from '../assets/history.png';
 import RecommendationsIcon from '../assets/recommendations.png';
-
+import FeedbackIcon from '../assets/feedback.png'; // Assuming you have a feedback icon
+import LogoutIcon from '../assets/logout.png'; // Assuming you have a logout icon
 export default function HomePage({setIsLoggedIn}) {
   const navigation = useNavigation();
   const handlelogout = () => {
@@ -68,12 +69,12 @@ export default function HomePage({setIsLoggedIn}) {
         </TouchableOpacity>
         {/* Log out button */}
         <TouchableOpacity style={styles.button} onPress={handlelogout}>
-          <Image source={RecommendationsIcon} style={styles.icon} />
+          <Image source={LogoutIcon} style={styles.icon} />
           <Text style={styles.buttonText}>Logout</Text>
         </TouchableOpacity>
         {/* feedbacks and review button */}
         <TouchableOpacity style={styles.button} onPress={handlefeedback}>
-          <Image source={RecommendationsIcon} style={styles.icon} />
+          <Image source={FeedbackIcon} style={styles.icon} />
           <Text style={styles.buttonText}>Feedbacks</Text>
         </TouchableOpacity>
       </View>
