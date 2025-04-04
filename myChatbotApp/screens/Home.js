@@ -2,39 +2,57 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-// Assuming you have a bot icon image in your assets folder
-import BotIcon from '../assets/bot.png'; 
+// Assuming you have icons in your assets folder
+import ChatIcon from '../assets/chat.png';
+import AIIcon from '../assets/ai.png';
+import HistoryIcon from '../assets/history.png';
+import RecommendationsIcon from '../assets/recommendations.png';
 
 export default function HomePage() {
   const navigation = useNavigation();
 
-  const handleGetStarted = () => {
-    navigation.navigate('SignUp'); // Navigate to chatbot screen
+  const handleChat = () => {
+    navigation.navigate('Chatbot'); // Navigate to chatbot screen
   };
 
-  const handleSignUp = () => {
-    navigation.navigate('login'); // Navigate to sign-up screen
+  const handleChatWithAI = () => {
+    navigation.navigate('Recommendations'); // Navigate to AI screen or similar
+  };
+
+  const handleHistory = () => {
+    navigation.navigate('History'); // Navigate to history screen
+  };
+
+  const handleRecommendations = () => {
+    navigation.navigate('Recommendations'); // Navigate to recommendations screen
   };
 
   return (
     <View style={styles.container}>
-      {/* Top buttons */}
+      {/* Centered buttons */}
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={handleGetStarted}>
-          <Text style={styles.buttonText}>Get Started</Text>
+        {/* Chat button */}
+        <TouchableOpacity style={styles.button} onPress={handleChat}>
+          <Image source={ChatIcon} style={styles.icon} />
+          <Text style={styles.buttonText}>Chat</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button} onPress={handleSignUp}>
-          <Text style={styles.buttonText}>Sign In</Text>
+        {/* Chat with AI button */}
+        <TouchableOpacity style={styles.button} onPress={handleChatWithAI}>
+          <Image source={AIIcon} style={styles.icon} />
+          <Text style={styles.buttonText}>Chat with AI</Text>
         </TouchableOpacity>
-      </View>
 
-      {/* Centered Bot Icon */}
-      <View style={styles.botContainer}>
-        <Image source={BotIcon} style={styles.botIcon} />
-        <Text style={styles.botText}>Let's Chat with Bot</Text>
-        <TouchableOpacity style={styles.button} onPress={handleSignUp}>
-          <Text style={styles.buttonText}>Chat!</Text>
+        {/* View History button */}
+        <TouchableOpacity style={styles.button} onPress={handleHistory}>
+          <Image source={HistoryIcon} style={styles.icon} />
+          <Text style={styles.buttonText}>View History</Text>
+        </TouchableOpacity>
+
+        {/* View Recommendations button */}
+        <TouchableOpacity style={styles.button} onPress={handleRecommendations}>
+          <Image source={RecommendationsIcon} style={styles.icon} />
+          <Text style={styles.buttonText}>View Recommendations</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -43,47 +61,36 @@ export default function HomePage() {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 50,
     flex: 1,
-    backgroundColor: '#27445D', // Deep blue background
+    backgroundColor: '#27391C', // Deep blue background
     justifyContent: 'center', // Center everything vertically
     alignItems: 'center', // Center everything horizontally
     padding: 20,
   },
   buttonContainer: {
-    position: 'absolute',
-    top: 40,
     flexDirection: 'row',
+    flexWrap: 'wrap',
     justifyContent: 'center',
     gap: 20,
     width: '100%',
     paddingHorizontal: 20,
   },
   button: {
-    backgroundColor: '#3D8D7A', // Yellow color for buttons
+    backgroundColor: '#1F7D53', // Greenish color for buttons
     padding: 15,
-    borderRadius: 30,
-    width: '45%',
+    borderRadius: 15,
+    width: 120,
     alignItems: 'center',
+    marginBottom: 20,
   },
   buttonText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
-    fontStyle: 'roboto', // Use a bold font style
+    marginTop: 10,
   },
-  botContainer: {
-    alignItems: 'center',
-  },
-  botIcon: {
-    width: 280,
-    height: 280,
-    marginBottom: 20,
-  },
-  botText: {
-    fontSize: 24,
-    color: '#fff',
-    fontWeight: 'bold',
-    marginBottom: 20,
+  icon: {
+    width: 50,
+    height: 50,
   },
 });
