@@ -2,10 +2,13 @@ const express = require("express");
 const sqlite3 = require("sqlite3").verbose();
 const cors = require("cors");
 const app = express();
-
+const natural = require('natural');
 app.use(express.json());
 app.use(cors());
-
+const stemmer = natural.PorterStemmer;
+const getRootWord = (query) => {
+    return stemmer.stem(query.toLowerCase());
+};
 const db = new sqlite3.Database("chatbot.db", (err) => {
     if (err) console.error("Database connection error:", err.message);
     else console.log("Database connected.");
@@ -13,6 +16,7 @@ const db = new sqlite3.Database("chatbot.db", (err) => {
 
 // Create tables
 db.serialize(() => {
+    db.run("DELETE TABLE cache")
     db.run("CREATE TABLE IF NOT EXISTS users (user_id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT UNIQUE, password TEXT)");
     db.run(`CREATE TABLE IF NOT EXISTS chat_history (
         chat_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -22,7 +26,7 @@ db.serialize(() => {
         timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES users(user_id)
     )`);
-    db.run("CREATE TABLE IF NOT EXISTS cache (query TEXT PRIMARY KEY, response TEXT)");
+    db.run("CREATE TABLE IF NOT EXISTS cache (query TEXT PRIMARY KEY, response TEXT, stemmed_query TEXT)");
 });
 
 // Predefined cache responses (related to a website)
@@ -51,22 +55,33 @@ app.post("/signin", (req, res) => {
     });
 });
 
-// Chatbot API (uses cache responses only)
+// Predefined response route (uses cache responses only)
 app.post("/chatbot", (req, res) => {
     console.log("Received chat request:", req.body);
-    const { user_id,query } = req.body;
+    const { user_id, query } = req.body;
 
-    db.get("SELECT response FROM cache WHERE query = ?", [query], (err, row) => {
+    // Stem the incoming user query
+    const rootQuery = getRootWord(query);
+
+    // Check if the stemmed query exists in the database
+    db.get("SELECT response FROM cache WHERE stemmed_query = ?", [rootQuery], (err, row) => {
+        if (err) {
+            console.error('Error querying the database:', err);
+            return res.status(500).json({ response: 'Internal server error' });
+        }
+
         if (row) {
+            // Save chat history in the database (optional, based on your requirements)
             saveChatHistory(user_id, query, row.response);
+
             console.log("Cache hit:", row.response);
             return res.json({ response: row.response });
+        } else {
+            console.log("Cache miss for query:", query);
+            return res.json({ response: "I am not sure how to answer that. Try asking something else!" });
         }
-        console.log("Cache miss for query:", query);
-        res.json({ response: "I am not sure how to answer that. Try asking something else!" });
     });
 });
-
 function saveChatHistory(user_id, query, response) {
     db.run("INSERT INTO chat_history (user_id, query, response) VALUES (?, ?, ?)", [user_id, query, response]);
     console.log("Chat history saved:", { user_id, query, response });
