@@ -9,9 +9,11 @@ import AIIcon from '../assets/ai.png';
 import HistoryIcon from '../assets/history.png';
 import RecommendationsIcon from '../assets/recommendations.png';
 
-export default function HomePage() {
+export default function HomePage({setIsLoggedIn}) {
   const navigation = useNavigation();
-
+  const handlelogout = () => {
+    setIsLoggedIn(false) // Navigate to login screen
+    };
   const handleChat = () => {
     navigation.navigate('Chatbot'); // Navigate to chatbot screen
   };
@@ -53,14 +55,19 @@ export default function HomePage() {
         {/* View History button */}
         <TouchableOpacity style={styles.button} onPress={handleHistory}>
           <Image source={HistoryIcon} style={styles.icon} />
-          <Text style={styles.buttonText}>View History</Text>
+          <Text style={styles.buttonText}>History</Text>
         </TouchableOpacity>
 
         {/* View Recommendations button */}
         <TouchableOpacity style={styles.button} onPress={handleRecommendations}>
           <Image source={RecommendationsIcon} style={styles.icon} />
-          <Text style={styles.buttonText}>View Recommendations</Text>
+          <Text style={styles.buttonText}>Recomend</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={handlelogout}>
+          <Image source={RecommendationsIcon} style={styles.icon} />
+          <Text style={styles.buttonText}>Logout</Text>
+        </TouchableOpacity>
+        
       </View>
     </View>
   );

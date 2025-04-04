@@ -20,7 +20,9 @@ export default function App() {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {isLoggedIn ? (
           <>
-            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="Home">
+              {(props) => <HomeScreen {...props} setIsLoggedIn={setIsLoggedIn} />}
+            </Stack.Screen>
             <Stack.Screen name="Chatbot">
               {(props) => <Chatbot {...props} userId={userId} />}
             </Stack.Screen>

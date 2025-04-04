@@ -103,6 +103,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#e0e0e0',
         width: '100%',
+        flexWrap: 'wrap', // This allows text to wrap
     },
     emptyMessage: {
         fontSize: 18,

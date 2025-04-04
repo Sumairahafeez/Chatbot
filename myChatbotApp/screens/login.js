@@ -29,7 +29,6 @@ const SignInScreen = ({setUserId,setIsLoggedIn}) => {
         Alert.alert('Sign In Success', data.message);
         setUserId(data.user_id); // Set user ID in state
         setIsLoggedIn(true); // Set logged-in state to true
-        navigation.navigate('Home'); // Navigate to Chatbot screen
       } else {
         Alert.alert('Error', data.error || 'Something went wrong!');
       }

@@ -16,7 +16,7 @@ const db = new sqlite3.Database("chatbot.db", (err) => {
 
 // Create tables
 db.serialize(() => {
-    db.run("DROP TABLE IF EXISTS cache")
+    // db.run("DROP TABLE IF EXISTS cache")
     db.run("CREATE TABLE IF NOT EXISTS users (user_id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT UNIQUE, password TEXT)");
     db.run(`CREATE TABLE IF NOT EXISTS chat_history (
         chat_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -53,7 +53,14 @@ const predefinedResponses = {
 for (const [query, response] of Object.entries(predefinedResponses)) {
     let stem = getRootWord(query);
     console.log("Inserting into cache:", { query, response, stem });
-    db.run("INSERT OR IGNORE INTO cache (query, response,stemmed_query) VALUES (?, ?,?)", [query, response, stem]);
+    db.run("INSERT OR REPLACE INTO cache (query, response, stemmed_query) VALUES (?, ?, ?)", 
+        [query, response, stem], (err) => {
+            if (err) {
+                console.error("Error inserting into cache:", err);
+            } else {
+                console.log('Inserting into cache:', { query, response, stem });
+            }
+    });
 }
 
 app.post("/signin", (req, res) => {
