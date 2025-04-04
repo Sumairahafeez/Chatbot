@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'; // Import FontAwesome icons
 import { useNavigation } from '@react-navigation/native';
-const ChatbotPage = ({user_id}) => {
+
+const ChatbotPage = ({ userId }) => {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const [history, setHistory] = useState([]);
@@ -15,7 +16,7 @@ const ChatbotPage = ({user_id}) => {
     }
 
     // Add user message to chat
-    const userMessage = {query: message};
+    const userMessage = { query: message };
     const userMessage2 = { sender: 'user', text: message };
     setMessages((prevMessages) => [...prevMessages, userMessage2]);
 
@@ -30,8 +31,8 @@ const ChatbotPage = ({user_id}) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            user_id: user_id, // Assuming a static user ID for simplicity
-            query: userMessage.query, // Send user message to backend
+          user_id: userId, // Assuming a static user ID for simplicity
+          query: userMessage.query, // Send user message to backend
         }),  // Send user message to backend
       });
 
@@ -61,6 +62,7 @@ const ChatbotPage = ({user_id}) => {
   const handleClearCache = () => {
     setCache([]);  // Clear cache
     Alert.alert('Cache Cleared', 'Chat history cache has been cleared.');
+    navigation.navigate('DeleteHistory'); // Navigate to delete cache screen
   };
 
   const handleShowHistory = () => {
@@ -77,6 +79,7 @@ const ChatbotPage = ({user_id}) => {
     ];
 
     Alert.alert('Chatbot Recommendations', recommendations.join('\n'));
+    navigation.navigate('Recommendations'); // Navigate to recommendations screen
   };
 
   const renderItem = ({ item }) => (
@@ -94,25 +97,13 @@ const ChatbotPage = ({user_id}) => {
     <View style={styles.container}>
       <Text style={styles.heading}>Chat with the Bot</Text>
 
-      {/* Action Buttons */}
-      <View style={styles.buttonsContainer}>
-        <TouchableOpacity onPress={handleShowHistory} style={styles.actionButton}>
-          <Icon name="history" size={24} color="#fff" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handleClearCache} style={styles.actionButton}>
-          <Icon name="trash" size={24} color="#fff" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handleRecommendations} style={styles.actionButton}>
-          <Icon name="star" size={24} color="#fff" />
-        </TouchableOpacity>
-      </View>
-
       <FlatList
         data={messages}
         renderItem={renderItem}
         keyExtractor={(item, index) => index.toString()}
         style={styles.chatList}
       />
+      
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
@@ -120,6 +111,17 @@ const ChatbotPage = ({user_id}) => {
           value={message}
           onChangeText={setMessage}
         />
+        <View style={styles.iconContainer}>
+          <TouchableOpacity onPress={handleShowHistory}>
+            <Icon name="history" size={24} color="#27445D" />
+          </TouchableOpacity>
+          {/* <TouchableOpacity onPress={handleClearCache}>
+            <Icon name="trash" size={24} color="#27445D" />
+          </TouchableOpacity> */}
+          <TouchableOpacity onPress={handleRecommendations}>
+            <Icon name="star" size={24} color="#27445D" />
+          </TouchableOpacity>
+        </View>
         <TouchableOpacity onPress={handleSendMessage} style={styles.sendButton}>
           <Text style={styles.sendButtonText}>Send</Text>
         </TouchableOpacity>
@@ -130,16 +132,21 @@ const ChatbotPage = ({user_id}) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 50,
     flex: 1,
     padding: 20,
     backgroundColor: '#fff',
   },
   heading: {
     fontSize: 24,
+    backgroundColor: '#71BBB2',
     fontWeight: 'bold',
     textAlign: 'center',
     marginVertical: 40,
+    border:1,
+    borderColor: '#27445D',
+    borderRadius: 10,
+    height: 50,
+    justifyContent: 'center',
     color: '#27445D',
   },
   chatList: {
@@ -170,6 +177,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: '#ddd',
     paddingVertical: 10,
+    position: 'relative',
   },
   input: {
     flex: 1,
@@ -178,6 +186,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ddd',
     marginRight: 10,
+  },
+  iconContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    gap: 7,
+    marginLeft: 10,
+    position: 'absolute',
+    right: 90, // Adjust this to make space for the buttons
   },
   sendButton: {
     backgroundColor: '#27445D',
@@ -188,26 +204,6 @@ const styles = StyleSheet.create({
   sendButtonText: {
     color: '#fff',
     fontWeight: 'bold',
-  },
-  buttonsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    backgroundColor: '#27445D',
-    marginBottom: 20,
-    position: 'absolute',
-    top: 5,
-    width: '115%',
-    zIndex: 1, // Ensure buttons are on top
-  },
-  actionButton: {
-    backgroundColor: '#27445D',
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    borderRadius: 50,
-    width: 50,
-    height: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 });
 

@@ -74,14 +74,17 @@ function saveChatHistory(user_id, query, response) {
 
 // Fetch chat history
 app.get("/history/:user_id", (req, res) => {
+    console.log("Fetching chat history for user:", req.params.user_id);
     db.all("SELECT * FROM chat_history WHERE user_id = ?", [req.params.user_id], (err, rows) => {
         if (err) return res.status(500).json({ error: err.message });
         res.json(rows);
+        console.log("Chat history fetched:", rows);
     });
 });
 
 // Basic recommendation system
 app.get("/recommendations/:user_id", (req, res) => {
+    console.log("Fetching recommendations for user:", req.params.user_id);
     db.get("SELECT query FROM chat_history WHERE user_id = ? ORDER BY timestamp DESC LIMIT 1", [req.params.user_id], (err, row) => {
         if (!row) return res.json({ recommendation: "Ask about our chatbot services!" });
         const lastQuery = row.query.toLowerCase();
@@ -110,6 +113,24 @@ app.post("/signup", (req, res) => {
         res.json({ user_id: this.lastID, message: "User created successfully!" });
     });
 });
-
+app.delete("/history/:user_id/:chat_id", (req, res) => {
+    console.log("Deleting chat history item:", req.params.chat_id," of ",req.params.user_id);
+    if (!req.params.chat_id || !req.params.user_id) {
+        return res.status(400).json({ error: "Chat ID and User ID are required!" });
+    }
+    db.run("DELETE FROM chat_history WHERE chat_id = ? AND user_id = ?", [req.params.chat_id, req.params.user_id], function (err) {
+        if (err) return res.status(500).json({ error: err.message });
+        if (this.changes === 0) return res.status(404).json({ error: "Chat history item not found!" });
+        res.json({ message: "Chat history item deleted successfully!" });
+        console.log("Deleted chat history item:", req.params.chat_id);
+    });
+});
+app.delete("/cache", (req, res) => {
+    console.log("Clearing cache");
+    db.run("DELETE FROM cache", function (err) {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ message: "Cache cleared successfully!" });
+    });
+});
 
 app.listen(3000, () => console.log("Server running on port 3000"));

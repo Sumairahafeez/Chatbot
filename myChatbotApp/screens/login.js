@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-const SignInScreen = ({setUserId}) => {
+const SignInScreen = ({setUserId},{setIsLoggedIn}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigation = useNavigation(); // Use navigation prop to navigate between screens
@@ -28,6 +28,7 @@ const SignInScreen = ({setUserId}) => {
         console.log('Sign-In Successful:', data);
         Alert.alert('Sign In Success', data.message);
         setUserId(data.user_id); // Set user ID in state
+        setIsLoggedIn(true); // Set logged-in state to true
         navigation.navigate('Chatbot'); 
       } else {
         Alert.alert('Error', data.error || 'Something went wrong!');

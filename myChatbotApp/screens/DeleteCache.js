@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-const History = ({ userId }) => {
+const DeleteHistory = ({ userId }) => {
     const [history, setHistory] = useState([]);
 
     useEffect(() => {
@@ -97,17 +97,6 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 24,
-        backgroundColor: '#2C3930',
-        fontWeight: 'bold',
-        textAlign: 'center',
-        marginVertical: 10,
-        border:1,
-        borderColor: '#27445D',
-        borderRadius: 10,
-        height: 50,
-        justifyContent: 'center',
-        color: '#DCD7C9',
-        fontSize: 24,
         fontWeight: 'bold',
         marginBottom: 20,
         textAlign: 'center',
@@ -118,7 +107,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 15,
         borderBottomWidth: 1,
-        backgroundColor: '#DCD7C9',
         borderBottomColor: '#ccc',
     },
     textContainer: {
@@ -140,4 +128,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default History;
+export default DeleteHistory;
