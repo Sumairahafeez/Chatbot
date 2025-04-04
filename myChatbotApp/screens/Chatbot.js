@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'; // Import FontAwesome icons
-
+import { useNavigation } from '@react-navigation/native';
 const ChatbotPage = ({user_id}) => {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const [history, setHistory] = useState([]);
   const [cache, setCache] = useState([]);
+  const navigation = useNavigation();
 
   const handleSendMessage = async () => {
     if (!message.trim()) {
@@ -64,6 +65,7 @@ const ChatbotPage = ({user_id}) => {
 
   const handleShowHistory = () => {
     Alert.alert('Chat History', history.map(msg => `${msg.sender}: ${msg.text}`).join('\n'));
+    navigation.navigate('History'); // Navigate to history screen
   };
 
   const handleRecommendations = () => {

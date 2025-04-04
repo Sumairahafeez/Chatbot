@@ -5,6 +5,7 @@ import LoginScreen from "./screens/login"; // Ensure correct path
 import SignupScreen from "./screens/signup"; // Placeholder
 import HomeScreen from "./screens/Home"; // Placeholder
 import Chatbot from "./screens/Chatbot"; // Placeholder
+import History from "./screens/History"; // Placeholder
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -21,6 +22,9 @@ export default function App() {
       <Stack.Screen name="SignUp" component={SignupScreen} />
       <Stack.Screen name="Chatbot">
         {props => <Chatbot {...props} userId={userId} />}
+      </Stack.Screen>
+      <Stack.Screen name = "History">
+        {props => <History {...props} userId={userId} />}
       </Stack.Screen>
     </Stack.Navigator>
     </NavigationContainer>
