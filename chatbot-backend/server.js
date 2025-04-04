@@ -16,7 +16,7 @@ const db = new sqlite3.Database("chatbot.db", (err) => {
 
 // Create tables
 db.serialize(() => {
-    // db.run("DROP TABLE IF EXISTS cache")
+    // db.run("DROP TABLE IF EXISTS cache");
     db.run("CREATE TABLE IF NOT EXISTS users (user_id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT UNIQUE, password TEXT)");
     db.run(`CREATE TABLE IF NOT EXISTS chat_history (
         chat_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -26,10 +26,10 @@ db.serialize(() => {
         timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES users(user_id)
     )`);
-    db.run("CREATE TABLE IF NOT EXISTS feedbacks (feedback_id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, feedback TEXT, timestamp DATETIME DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY (user_id) REFERENCES users(user_id))");
+    db.run("CREATE TABLE IF NOT EXISTS feedbacks (feedback_id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, feedback TEXT, FOREIGN KEY (user_id) REFERENCES users(user_id))");
     db.run("CREATE TABLE IF NOT EXISTS cache (query TEXT PRIMARY KEY, response TEXT, stemmed_query TEXT)");
-});
 
+});
 const predefinedResponses = {
     "What is this website about": "This website provides information about AI-powered chatbots.",
     "How can I use the chatbot": "You can type your question, and the chatbot will respond instantly!",
@@ -62,6 +62,7 @@ for (const [query, response] of Object.entries(predefinedResponses)) {
                 console.log('Inserting into cache:', { query, response, stem });
             }
     });
+      
 }
 
 app.post("/signin", (req, res) => {
@@ -172,26 +173,33 @@ app.get("/recommendations/:user_id", (req, res) => {
         res.json({ recommendation });
     });
 });
-app.post("/feedbacks/:user_id", (req, res) => {
-    console.log("Received feedback:", req.body);
-    const { user_id } = req.params;
+app.post("/feedbacks", (req, res) => {
+    
+    const { user_id } = req.body;
     const { feedback } = req.body;
-
+    console.log("Received feedback:", req.body);
     if (!feedback) {
         return res.status(400).json({ error: "Feedback is required!" });
     }
-
-    db.run("INSERT INTO feedbacks (user_id, feedback) VALUES (?, ?)", [user_id, feedback], function (err) {
-        if (err) {
-            console.error("Database error:", err.message);
-            return res.status(500).json({ error: err.message });
-        }
-        res.json({ message: "Feedback submitted successfully!" });
-    });
+    try {
+        db.run("INSERT INTO feedbacks (user_id, feedback) VALUES (?, ?)", [user_id, feedback], function (err) {
+            if (err) {
+                console.error("Database error:", err.message);
+                return res.status(500).json({ error: err.message });
+            }
+    
+            console.log("Feedback submitted:", { user_id, feedback });
+            res.json({ message: "Feedback submitted successfully!" });
+        });
+    } catch (e) {
+        console.error("Caught exception:", e.message);
+        res.status(500).json({ error: "Exception caught in server" });
+    }
+    
 });
 app.put("/feedbacks/:feedback_id/:user_id", (req, res) => {
     console.log("Updating feedback:", req.body);
-    const { feedback_id } = req.params;
+    const { feedback_id ,user_id} = req.params;
     const { feedback } = req.body;
 
     if (!feedback) {
@@ -204,14 +212,15 @@ app.put("/feedbacks/:feedback_id/:user_id", (req, res) => {
             return res.status(500).json({ error: err.message });
         }
         if (this.changes === 0) return res.status(404).json({ error: "Feedback not found!" });
+        console.log("Feedback updated:", { feedback_id, user_id, feedback });
         res.json({ message: "Feedback updated successfully!" });
     });
 });
 app.delete("/feedbacks/:feedback_id/:user_id", (req, res) => {
-    console.log("Deleting feedback:", req.params.feedback_id," of ",req.params.user_id);
-    const { feedback_id } = req.params;
+    console.log("Deleting feedback:", req.params.feedback_id);
+    const { feedback_id, user_id } = req.params;
 
-    db.run("DELETE FROM feedbacks WHERE feedback_id = ? AND user_id = ?", [feedback_id, user_id], function (err) {
+    db.get("DELETE FROM feedbacks WHERE feedback_id = ? AND user_id = ?", [feedback_id, user_id], function (err) {
         if (err) return res.status(500).json({ error: err.message });
         if (this.changes === 0) return res.status(404).json({ error: "Feedback not found!" });
         res.json({ message: "Feedback deleted successfully!" });

@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const API_URL = 'http://192.168.100.61:3000/feedbacks'; // Replace with your IP or localhost for emulator
 
-const FeedbackScreen = ({ userId }) => {
+const FeedbackScreen = ({userId}) => {
     const [feedbacks, setFeedbacks] = useState([]);
     const [feedbackText, setFeedbackText] = useState('');
     const [editingId, setEditingId] = useState(null);
@@ -17,6 +17,8 @@ const FeedbackScreen = ({ userId }) => {
             if (!response.ok) {
                 throw new Error('Failed to fetch feedbacks');
             }
+            console.log('Feedbacks:', data); // Log the feedbacks for debugging
+            setFeedbacks(data || []); // Set feedbacks to an empty array if null or undefined
             setFeedbacks(data);
         } catch (error) {
             console.error(error);
@@ -30,10 +32,10 @@ const FeedbackScreen = ({ userId }) => {
     const handleAdd = async () => {
         if (!feedbackText.trim()) return Alert.alert("Error", "Feedback cannot be empty");
         try {
-            await fetch(`${API_URL}/${userId}`, {
+            await fetch(`${API_URL}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId, text: feedbackText }),
+                body: JSON.stringify({user_id: userId, feedback: feedbackText }),
             });
             setFeedbackText('');
             fetchFeedbacks();
@@ -48,7 +50,7 @@ const FeedbackScreen = ({ userId }) => {
             await fetch(`${API_URL}/${editingId}/${userId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ text: feedbackText }),
+                body: JSON.stringify({ feedback: feedbackText }),
             });
             setFeedbackText('');
             setEditingId(null);
@@ -88,15 +90,15 @@ const FeedbackScreen = ({ userId }) => {
 
             <FlatList
                 data={feedbacks}
-                keyExtractor={(item) => item.id}
+                keyExtractor={(item) => item.feedback_id.toString()}
                 renderItem={({ item }) => (
                     <View style={styles.feedbackItem}>
-                        <Text style={styles.feedbackText}>{item.text}</Text>
+                        <Text style={styles.feedbackText}>{item.feedback}</Text>
                         <View style={styles.iconContainer}>
-                            <TouchableOpacity onPress={() => handleEdit(item.id, item.text)}>
+                            <TouchableOpacity onPress={() => handleEdit(item.feedback_id, item.feedback)}>
                                 <Icon name="edit" size={24} color="#FFD700" />
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => handleDelete(item.id)}>
+                            <TouchableOpacity onPress={() => handleDelete(item.feedback_id)}>
                                 <Icon name="delete" size={24} color="#FF4444" />
                             </TouchableOpacity>
                         </View>
