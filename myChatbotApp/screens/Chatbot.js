@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontSize: 24,
-    backgroundColor: '#71BBB2',
+    backgroundColor: '#27391C',
     fontWeight: 'bold',
     textAlign: 'center',
     marginVertical: 40,
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     height: 50,
     justifyContent: 'center',
-    color: '#27445D',
+    color: '#FFEDFA',
   },
   chatList: {
     flex: 1,

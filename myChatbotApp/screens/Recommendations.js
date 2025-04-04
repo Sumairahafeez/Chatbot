@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, FlatList, ActivityIndicator } from 'react-nativ
 const Recommendations = ({ userId }) => {
     const [recommendations, setRecommendations] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchRecommendations = async () => {
@@ -18,10 +19,11 @@ const Recommendations = ({ userId }) => {
                 if (typeof recs === 'string') {
                     recs = [recs];
                 }
-                console.log('Fetched recommendations:', recs); // ✅ Fix typo: was 'consosle'
-                setRecommendations(recs || ["no recommendations available"]); // Handle empty or undefined data
+                console.log('Fetched recommendations:', recs); 
+                setRecommendations(recs || ["No recommendations available"]); 
             } catch (error) {
                 console.error('Error fetching recommendations:', error);
+                setError(error.message); // Set error message for display
             } finally {
                 setLoading(false);
             }
@@ -33,8 +35,16 @@ const Recommendations = ({ userId }) => {
     if (loading) {
         return (
             <View style={styles.container}>
-                <ActivityIndicator size="large" color="#0000ff" />
-                <Text>Loading recommendations...</Text>
+                <ActivityIndicator size="large" color="#27445D" />
+                <Text style={styles.loadingText}>Loading recommendations...</Text>
+            </View>
+        );
+    }
+
+    if (error) {
+        return (
+            <View style={styles.container}>
+                <Text style={styles.errorText}>{error}</Text>
             </View>
         );
     }
@@ -46,6 +56,7 @@ const Recommendations = ({ userId }) => {
                 data={recommendations}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item }) => <Text style={styles.item}>{item}</Text>}
+                ListEmptyComponent={<Text style={styles.emptyMessage}>No recommendations available.</Text>}
             />
         </View>
     );
@@ -58,15 +69,45 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 16,
         marginTop: 50,
+        backgroundColor: '#f9f9f9',
     },
     title: {
         fontSize: 24,
         fontWeight: 'bold',
-        marginBottom: 16,
+        width: '100%',
+        backgroundColor: '#27445D',
+        color: '#DCD7C9',
+        textAlign: 'center',
+        paddingVertical: 15,
+        borderRadius: 10,
+        marginBottom: 10,
+    },
+    loadingText: {
+        fontSize: 18,
+        color: '#333',
+        marginTop: 10,
+    },
+    errorText: {
+        fontSize: 18,
+        color: '#D9534F', // Red for error messages
+        textAlign: 'center',
+        marginTop: 10,
     },
     item: {
         fontSize: 18,
+        color: '#444',
         marginVertical: 8,
+        padding: 10,
+        backgroundColor: '#fff',
+        borderRadius: 8,
+        borderWidth: 1,
+        borderColor: '#e0e0e0',
+        width: '100%',
+    },
+    emptyMessage: {
+        fontSize: 18,
+        color: '#666',
+        fontStyle: 'italic',
     },
 });
 

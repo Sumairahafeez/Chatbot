@@ -32,7 +32,7 @@ const History = ({ userId }) => {
 
     const deleteHistoryItem = async (chatId) => {
         try {
-            console.log('Deleting history item with chat_id:', chatId, "user ID",userId); // Log the chatId being deleted
+            console.log('Deleting history item with chat_id:', chatId, "user ID", userId);
             const response = await fetch(`http://192.168.100.61:3000/history/${userId}/${chatId}`, {
                 method: 'DELETE',
             });
@@ -77,9 +77,8 @@ const History = ({ userId }) => {
                                 {item.timestamp}
                             </Text>
                         </View>
-                        {console.log('History item:', item)}
                         <TouchableOpacity onPress={() => confirmDelete(item.chat_id)}>
-                            <Icon name="delete" size={24} color="#ff3333" />
+                            <Icon name="delete" size={24} color="#27445D" />
                         </TouchableOpacity>
                     </View>
                 )}
@@ -92,25 +91,18 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         marginTop: 50,
-        backgroundColor: '#fff',
+        backgroundColor: '#f9f9f9',
         padding: 20,
     },
     title: {
         fontSize: 24,
-        backgroundColor: '#2C3930',
         fontWeight: 'bold',
-        textAlign: 'center',
-        marginVertical: 10,
-        border:1,
-        borderColor: '#27445D',
-        borderRadius: 10,
-        height: 50,
-        justifyContent: 'center',
+        backgroundColor: '#27445D',
         color: '#DCD7C9',
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 20,
         textAlign: 'center',
+        paddingVertical: 15,
+        borderRadius: 10,
+        marginBottom: 20,
     },
     itemContainer: {
         flexDirection: 'row',
@@ -118,8 +110,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 15,
         borderBottomWidth: 1,
-        backgroundColor: '#DCD7C9',
-        borderBottomColor: '#ccc',
+        backgroundColor: '#F3F3F3',
+        borderBottomColor: '#E1E1E1',
+        borderRadius: 10,
+        marginBottom: 10,
     },
     textContainer: {
         flex: 1,
@@ -127,7 +121,7 @@ const styles = StyleSheet.create({
     },
     label: {
         fontWeight: 'bold',
-        color: '#333',
+        color: '#27445D',
     },
     query: {
         fontSize: 16,

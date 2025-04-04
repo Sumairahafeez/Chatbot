@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 // Assuming you have icons in your assets folder
+import BotIllustration from '../assets/bot.png'; // Bot illustration
 import ChatIcon from '../assets/chat.png';
 import AIIcon from '../assets/ai.png';
 import HistoryIcon from '../assets/history.png';
@@ -29,6 +30,12 @@ export default function HomePage() {
 
   return (
     <View style={styles.container}>
+      {/* Bot Illustration at the top */}
+      <View style={styles.botContainer}>
+        <Text style={{ color: '#fff', fontSize: 24, fontWeight: 'bold', marginBottom: 10 }}>Welcome to Chatbot</Text>
+        <Image source={BotIllustration} style={styles.botImage} />
+      </View>
+
       {/* Centered buttons */}
       <View style={styles.buttonContainer}>
         {/* Chat button */}
@@ -62,10 +69,18 @@ export default function HomePage() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#27391C', // Deep blue background
+    backgroundColor: '#27391C', // Deep green background
     justifyContent: 'center', // Center everything vertically
     alignItems: 'center', // Center everything horizontally
     padding: 20,
+  },
+  botContainer: {
+    marginBottom: 30, // Space between bot image and buttons
+    alignItems: 'center', // Center the bot illustration horizontally
+  },
+  botImage: {
+    width: 200, // Set width of the bot illustration
+    height: 200, // Set height of the bot illustration
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -76,7 +91,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   button: {
-    backgroundColor: '#1F7D53', // Greenish color for buttons
+    backgroundColor: '#1F7D53', // Green color for buttons
     padding: 15,
     borderRadius: 15,
     width: 120,
