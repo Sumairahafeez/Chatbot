@@ -69,25 +69,6 @@ const SignInScreen = ({setUserId,setIsLoggedIn}) => {
           <Text style={styles.loginButtonText}>Sign In</Text>
         </TouchableOpacity>
       </View>
-
-      <View style={styles.socialAccountContainer}>
-        <Text style={styles.socialAccountTitle}>Or Sign in with</Text>
-        <View style={styles.socialAccounts}>
-          <TouchableOpacity style={styles.socialButton}>
-            
-            <Text style={styles.socialIcon}>G</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.socialButton}>
-            
-            <Text style={styles.socialIcon}>A</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.socialButton}>
-            
-            <Text style={styles.socialIcon}>T</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-
       <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
         <Text style={styles.agreement}>Dont have an account</Text>
       </TouchableOpacity>

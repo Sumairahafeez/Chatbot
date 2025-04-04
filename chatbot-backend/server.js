@@ -26,6 +26,7 @@ db.serialize(() => {
         timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES users(user_id)
     )`);
+    db.run("CREATE TABLE IF NOT EXISTS feedbacks (feedback_id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, feedback TEXT, timestamp DATETIME DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY (user_id) REFERENCES users(user_id))");
     db.run("CREATE TABLE IF NOT EXISTS cache (query TEXT PRIMARY KEY, response TEXT, stemmed_query TEXT)");
 });
 
@@ -171,7 +172,59 @@ app.get("/recommendations/:user_id", (req, res) => {
         res.json({ recommendation });
     });
 });
+app.post("/feedbacks/:user_id", (req, res) => {
+    console.log("Received feedback:", req.body);
+    const { user_id } = req.params;
+    const { feedback } = req.body;
 
+    if (!feedback) {
+        return res.status(400).json({ error: "Feedback is required!" });
+    }
+
+    db.run("INSERT INTO feedbacks (user_id, feedback) VALUES (?, ?)", [user_id, feedback], function (err) {
+        if (err) {
+            console.error("Database error:", err.message);
+            return res.status(500).json({ error: err.message });
+        }
+        res.json({ message: "Feedback submitted successfully!" });
+    });
+});
+app.put("/feedbacks/:feedback_id/:user_id", (req, res) => {
+    console.log("Updating feedback:", req.body);
+    const { feedback_id } = req.params;
+    const { feedback } = req.body;
+
+    if (!feedback) {
+        return res.status(400).json({ error: "Feedback is required!" });
+    }
+
+    db.run("UPDATE feedbacks SET feedback = ? WHERE feedback_id = ? AND user_id = ?", [feedback, feedback_id,user_id], function (err) {
+        if (err) {
+            console.error("Database error:", err.message);
+            return res.status(500).json({ error: err.message });
+        }
+        if (this.changes === 0) return res.status(404).json({ error: "Feedback not found!" });
+        res.json({ message: "Feedback updated successfully!" });
+    });
+});
+app.delete("/feedbacks/:feedback_id/:user_id", (req, res) => {
+    console.log("Deleting feedback:", req.params.feedback_id," of ",req.params.user_id);
+    const { feedback_id } = req.params;
+
+    db.run("DELETE FROM feedbacks WHERE feedback_id = ? AND user_id = ?", [feedback_id, user_id], function (err) {
+        if (err) return res.status(500).json({ error: err.message });
+        if (this.changes === 0) return res.status(404).json({ error: "Feedback not found!" });
+        res.json({ message: "Feedback deleted successfully!" });
+    });
+});
+app.get("/feedbacks/:user_id", (req, res) => {
+    console.log("Fetching feedbacks for user:", req.params.user_id);
+    db.all("SELECT * FROM feedbacks WHERE user_id = ?", [req.params.user_id], (err, rows) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(rows);
+        console.log("Feedbacks fetched:", rows);
+    });
+});
 app.post("/signup", (req, res) => {
     console.log("Received signup request:", req.body);
     if (!req.body.username || !req.body.password) {

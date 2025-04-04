@@ -29,6 +29,9 @@ export default function HomePage({setIsLoggedIn}) {
   const handleRecommendations = () => {
     navigation.navigate('Recommendations'); // Navigate to recommendations screen
   };
+  const handlefeedback = () => {
+    navigation.navigate('Feedback'); // Navigate to feedback screen
+  }
 
   return (
     <View style={styles.container}>
@@ -63,11 +66,16 @@ export default function HomePage({setIsLoggedIn}) {
           <Image source={RecommendationsIcon} style={styles.icon} />
           <Text style={styles.buttonText}>Recomend</Text>
         </TouchableOpacity>
+        {/* Log out button */}
         <TouchableOpacity style={styles.button} onPress={handlelogout}>
           <Image source={RecommendationsIcon} style={styles.icon} />
           <Text style={styles.buttonText}>Logout</Text>
         </TouchableOpacity>
-        
+        {/* feedbacks and review button */}
+        <TouchableOpacity style={styles.button} onPress={handlefeedback}>
+          <Image source={RecommendationsIcon} style={styles.icon} />
+          <Text style={styles.buttonText}>Feedbacks</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

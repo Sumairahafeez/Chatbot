@@ -8,7 +8,7 @@ import Chatbot from "./screens/Chatbot"; // Placeholder
 import History from "./screens/History"; // Placeholder
 import Recommendations from "./screens/Recommendations"; // Placeholder
 import DeleteHistory from "./screens/DeleteCache"; // Placeholder
-
+import FeedbackScreen from "./screens/feedback"; // Placeholder
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -34,6 +34,9 @@ export default function App() {
             </Stack.Screen>
             <Stack.Screen name="DeleteHistory">
               {(props) => <DeleteHistory {...props} userId={userId} />}
+            </Stack.Screen>
+            <Stack.Screen name="Feedback">
+              {(props) => <FeedbackScreen {...props} userId={userId} />}
             </Stack.Screen>
           </>
         ) : (
