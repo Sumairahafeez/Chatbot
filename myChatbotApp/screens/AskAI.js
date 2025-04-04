@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 
 const AskAI = () => {
     const [question, setQuestion] = useState('');
@@ -10,7 +10,6 @@ const AskAI = () => {
         if (!question.trim()) return;
         setLoading(true);
         try {
-            // Replace with your AI API endpoint and key
             const apiUrl = 'https://api.example.com/ask-ai';
             const apiKey = 'your-api-key';
 
@@ -38,10 +37,18 @@ const AskAI = () => {
             <TextInput
                 style={styles.input}
                 placeholder="Type your question here..."
+                placeholderTextColor="#aaa"
                 value={question}
                 onChangeText={setQuestion}
             />
-            <Button title={loading ? 'Loading...' : 'Ask'} onPress={askAI} disabled={loading} />
+            <TouchableOpacity
+                style={[styles.button, loading && { opacity: 0.6 }]}
+                onPress={askAI}
+                disabled={loading}
+            >
+                <Text style={styles.buttonText}>{loading ? 'Loading...' : 'Ask'}</Text>
+            </TouchableOpacity>
+
             <ScrollView style={styles.responseContainer}>
                 <Text style={styles.response}>{response}</Text>
             </ScrollView>
@@ -53,31 +60,53 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 20,
-        backgroundColor: '#fff',
+        marginTop: 50,
+        backgroundColor: '#f9f9f9',
     },
     title: {
         fontSize: 24,
         fontWeight: 'bold',
-        marginBottom: 20,
+        backgroundColor: '#3D8D7A',
+        color: '#DCD7C9',
         textAlign: 'center',
+        paddingVertical: 15,
+        borderRadius: 10,
+        marginBottom: 20,
     },
     input: {
         borderWidth: 1,
-        borderColor: '#ccc',
-        borderRadius: 5,
-        padding: 10,
-        marginBottom: 10,
+        borderColor: '#444',
+        borderRadius: 10,
+        backgroundColor: '#fff',
+        color: '#B3D8A8',
+        padding: 12,
+        marginBottom: 15,
+        fontSize: 16,
+    },
+    button: {
+        backgroundColor: '#3D8D7A',
+        paddingVertical: 12,
+        borderRadius: 10,
+        alignItems: 'center',
+        marginBottom: 20,
+    },
+    buttonText: {
+        color: '#DCD7C9',
+        fontWeight: 'bold',
+        fontSize: 16,
     },
     responseContainer: {
-        marginTop: 20,
-        padding: 10,
+        padding: 15,
+        borderRadius: 10,
+        backgroundColor: '#fff',
+        borderColor: '#444',
         borderWidth: 1,
-        borderColor: '#ccc',
-        borderRadius: 5,
-        backgroundColor: '#f9f9f9',
+        maxHeight: 300,
     },
     response: {
+        color: '#ddd',
         fontSize: 16,
+        lineHeight: 22,
     },
 });
 

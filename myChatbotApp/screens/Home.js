@@ -20,7 +20,7 @@ export default function HomePage({setIsLoggedIn}) {
   };
 
   const handleChatWithAI = () => {
-    navigation.navigate('Recommendations'); // Navigate to AI screen or similar
+    navigation.navigate('AskAI'); // Navigate to AI screen or similar
   };
 
   const handleHistory = () => {
@@ -38,7 +38,13 @@ export default function HomePage({setIsLoggedIn}) {
     <View style={styles.container}>
       {/* Bot Illustration at the top */}
       <View style={styles.botContainer}>
-        <Text style={{ color: '#fff', fontSize: 24, fontWeight: 'bold', marginBottom: 10 }}>Welcome to Chatbot</Text>
+        <Text style={{ fontSize: 24,
+    fontWeight: 'bold',
+    color: '#3D8D7A',
+    textAlign: 'center',
+    paddingVertical: 15,
+    borderRadius: 10,
+    marginTop: 20, }}>Welcome to Chatbot</Text>
         <Image source={BotIllustration} style={styles.botImage} />
       </View>
 
@@ -85,7 +91,7 @@ export default function HomePage({setIsLoggedIn}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#27391C', // Deep green background
+    backgroundColor: 'f9f9f9', // Deep green background
     justifyContent: 'center', // Center everything vertically
     alignItems: 'center', // Center everything horizontally
     padding: 20,
@@ -102,20 +108,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    gap: 20,
+    gap: 15,
     width: '100%',
     paddingHorizontal: 20,
   },
   button: {
-    backgroundColor: '#1F7D53', // Green color for buttons
+    backgroundColor: 'white', // Green color for buttons
     padding: 15,
     borderRadius: 15,
+    borderColor: '#3D8D7A',
+    borderWidth: 2,
     width: 120,
     alignItems: 'center',
     marginBottom: 20,
   },
   buttonText: {
-    color: '#fff',
+    color: '#27445D',
     fontSize: 14,
     fontWeight: 'bold',
     marginTop: 10,

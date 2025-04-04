@@ -96,10 +96,10 @@ const FeedbackScreen = ({userId}) => {
                         <Text style={styles.feedbackText}>{item.feedback}</Text>
                         <View style={styles.iconContainer}>
                             <TouchableOpacity onPress={() => handleEdit(item.feedback_id, item.feedback)}>
-                                <Icon name="edit" size={24} color="#FFD700" />
+                                <Icon name="edit" size={24} color="#3D8D7A" />
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => handleDelete(item.feedback_id)}>
-                                <Icon name="delete" size={24} color="#FF4444" />
+                                <Icon name="delete" size={24} color="#3D8D7A" />
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -113,29 +113,37 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         marginTop: 20,
-        backgroundColor: '#27391C',
+        backgroundColor: '#f9f9f9',
         padding: 20,
     },
     title: {
         fontSize: 24,
         fontWeight: 'bold',
-        color: 'white',
-        marginBottom: 15,
+        backgroundColor: '#3D8D7A',
+        color: '#DCD7C9',
         textAlign: 'center',
+        paddingVertical: 15,
+        borderRadius: 10,
+        marginBottom: 20,
     },
     input: {
-        backgroundColor: '#1F7D53',
-        color: 'white',
-        padding: 12,
-        borderRadius: 10,
-        marginBottom: 10,
+        width: '100%',
+        backgroundColor: 'white',
+        borderColor: "#3D8D7A",
+        borderRadius: 20,
+        padding: 15,
+        marginTop: 15,
+        shadowColor: '#3D8D7A',
+        shadowOffset: { width: 0, height: 10 },
+        shadowRadius: 10,
+        shadowOpacity: 0.5,
     },
     button: {
-        backgroundColor: '#1F7D53',
+        backgroundColor: '#3D8D7A',
         padding: 15,
-        borderRadius: 10,
+        borderRadius: 20,
+        marginTop: 10,
         alignItems: 'center',
-        marginBottom: 20,
     },
     buttonText: {
         color: 'white',
@@ -143,20 +151,26 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     feedbackItem: {
-        backgroundColor: '#3A4C2F',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
         padding: 15,
+        borderBottomWidth: 1,
+        backgroundColor: '#F3F3F3',
+        borderBottomColor: '#E1E1E1',
         borderRadius: 10,
-        marginBottom: 15,
+        marginVertical: 10,
     },
+    
     feedbackText: {
-        color: 'white',
+        color: '#27445D',
         fontSize: 16,
     },
     iconContainer: {
         flexDirection: 'row',
         justifyContent: 'flex-end',
         marginTop: 10,
-        gap: 15,
+        gap: 8,
     },
 });
 

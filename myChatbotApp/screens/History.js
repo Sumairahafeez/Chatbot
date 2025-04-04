@@ -78,7 +78,7 @@ const History = ({ userId }) => {
                             </Text>
                         </View>
                         <TouchableOpacity onPress={() => confirmDelete(item.chat_id)}>
-                            <Icon name="delete" size={24} color="#27445D" />
+                            <Icon name="delete" size={24} color="#3D8D7A" />
                         </TouchableOpacity>
                     </View>
                 )}
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 24,
         fontWeight: 'bold',
-        backgroundColor: '#27445D',
+        backgroundColor: '#3D8D7A',
         color: '#DCD7C9',
         textAlign: 'center',
         paddingVertical: 15,
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     },
     label: {
         fontWeight: 'bold',
-        color: '#27445D',
+        color: '#3D8D7A',
     },
     query: {
         fontSize: 16,

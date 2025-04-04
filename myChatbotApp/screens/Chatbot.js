@@ -113,13 +113,13 @@ const ChatbotPage = ({ userId }) => {
         />
         <View style={styles.iconContainer}>
           <TouchableOpacity onPress={handleShowHistory}>
-            <Icon name="history" size={24} color="#27445D" />
+            <Icon name="history" size={24} color="#3D8D7A" />
           </TouchableOpacity>
           {/* <TouchableOpacity onPress={handleClearCache}>
             <Icon name="trash" size={24} color="#27445D" />
           </TouchableOpacity> */}
           <TouchableOpacity onPress={handleRecommendations}>
-            <Icon name="star" size={24} color="#27445D" />
+            <Icon name="star" size={24} color="#3D8D7A" />
           </TouchableOpacity>
         </View>
         <TouchableOpacity onPress={handleSendMessage} style={styles.sendButton}>
@@ -134,41 +134,43 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#fff',
+    marginTop: 50,
+    backgroundColor: '#f9f9f9',
   },
   heading: {
     fontSize: 24,
-    backgroundColor: '#27391C',
     fontWeight: 'bold',
+    backgroundColor: '#3D8D7A',
+    color: '#DCD7C9',
     textAlign: 'center',
-    marginVertical: 40,
-    border:1,
-    borderColor: '#27445D',
+    paddingVertical: 15,
     borderRadius: 10,
-    height: 50,
-    justifyContent: 'center',
-    color: '#FFEDFA',
+    marginBottom: 20,
   },
   chatList: {
     flex: 1,
     marginBottom: 20,
   },
   messageContainer: {
-    marginVertical: 5,
-    padding: 10,
-    borderRadius: 10,
-    maxWidth: '100%',
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 15,
+    marginTop: 15,
+    shadowColor: '#cff0ff',
+    shadowOffset: { width: 0, height: 10 },
+    shadowRadius: 10,
+    shadowOpacity: 0.5,
   },
   userMessage: {
-    backgroundColor: '#27445D',
+    backgroundColor: '#B3D8A8',
     alignSelf: 'flex-end',
   },
   botMessage: {
-    backgroundColor: '#71BBB2',
+    backgroundColor: '#C1D8C3',
     alignSelf: 'flex-start',
   },
   messageText: {
-    color: '#FFEDFA',
+    color: '#27445D',
     fontSize: 16,
   },
   inputContainer: {
@@ -196,7 +198,7 @@ const styles = StyleSheet.create({
     right: 90, // Adjust this to make space for the buttons
   },
   sendButton: {
-    backgroundColor: '#27445D',
+    backgroundColor: '#3D8D7A',
     paddingVertical: 10,
     paddingHorizontal: 15,
     borderRadius: 20,
