@@ -2,6 +2,11 @@
   "expo": {
     "name": "myChatbotApp",
     "slug": "myChatbotApp",
-    "version": "1.0.0"
+    "version": "1.0.0",
+    "extra": {
+      "eas": {
+        "projectId": "e585c389-5ca5-415b-aef9-a72306e105f2"
+      }
+    }
   }
 }
