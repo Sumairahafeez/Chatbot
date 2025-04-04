@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-const SignInScreen = ({setUserId},{setIsLoggedIn}) => {
+const SignInScreen = ({setUserId,setIsLoggedIn}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigation = useNavigation(); // Use navigation prop to navigate between screens
@@ -89,8 +89,8 @@ const SignInScreen = ({setUserId},{setIsLoggedIn}) => {
         </View>
       </View>
 
-      <TouchableOpacity onPress={() => Alert.alert('User License Agreement')}>
-        <Text style={styles.agreement}>Learn user licence agreement</Text>
+      <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+        <Text style={styles.agreement}>Dont have an account</Text>
       </TouchableOpacity>
     </View>
   );
@@ -101,9 +101,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F8F9FD',
+    backgroundColor: '#3D8D7A',
     padding: 25,
-    borderRadius: 40,
+    borderRadius: 20,
     borderWidth: 5,
     borderColor: '#fff',
     shadowColor: 'rgba(133, 189, 215, 0.878)',
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
   heading: {
     fontWeight: '900',
     fontSize: 30,
-    color: '#1089D3',
+    color: '#B3D8A8',
     marginBottom: 20,
   },
   form: {
@@ -133,12 +133,12 @@ const styles = StyleSheet.create({
   },
   forgotPassword: {
     fontSize: 11,
-    color: '#0099FF',
+    color: '#B3D8A8',
     textDecorationLine: 'underline',
     marginTop: 10,
   },
   loginButton: {
-    backgroundColor: '#1089D3',
+    backgroundColor: '#B3D8A8',
     padding: 15,
     borderRadius: 20,
     marginTop: 20,
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
   },
   socialAccountTitle: {
     fontSize: 10,
-    color: '#AAAAAA',
+    color: '#B3D8A8',
   },
   socialAccounts: {
     flexDirection: 'row',
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   socialButton: {
-    backgroundColor: '#666',
+    backgroundColor: '#B3D8A8',
     borderRadius: 25,
     padding: 10,
     justifyContent: 'center',
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
   },
   agreement: {
     fontSize: 9,
-    color: '#0099FF',
+    color: '#B3D8A8',
     textDecorationLine: 'underline',
     marginTop: 15,
   },

@@ -72,10 +72,15 @@ const SignUpScreen = () => {
         secureTextEntry
       />
       <Button
+        style={styles.buttonSignup}
+        color="#B3D8A8"
+        borderColor="#B3D8A8"
+        borderRadius={20}
+        borderWidth={2}
         title={loading ? 'Signing Up...' : 'Sign Up'}
         onPress={handleSignUp}
         disabled={loading}
-        style={styles.button}
+        
       />
 
       <TouchableOpacity>
@@ -96,10 +101,6 @@ const SignUpScreen = () => {
           </TouchableOpacity>
         </View>
       </View>
-
-      <TouchableOpacity>
-        <Text style={styles.agreement}>Learn user license agreement</Text>
-      </TouchableOpacity>
     </View>
   );
 };
@@ -109,13 +110,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F8F9FD',
+    gap: 15,
+    backgroundColor: '#3D8D7A',
     padding: 20,
   },
   heading: {
     fontSize: 30,
     fontWeight: '900',
-    color: '#1089D3',
+    color: '#B3D8A8',
     marginBottom: 20,
   },
   input: {
@@ -123,25 +125,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     padding: 15,
     borderRadius: 20,
-    marginTop: 15,
-    borderColor: '#12B1D1',
+    marginTop: 8,
+    borderColor: '#B3D8A8',
     borderWidth: 2,
   },
-  button: {
+  buttonSignup: {
     height: 50,
     width: 120,
-    backgroundColor: '#333',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: '#404c5d',
-    shadowColor: '#41465b',
-    shadowOffset: { width: -1, height: -5 },
-    shadowOpacity: 0.7,
-    shadowRadius: 15,
-    elevation: 5,
-    backgroundColor: '#3674B5',
+    marginTop: 20,
+    backgroundColor: '#B3D8A8',
   },
   buttonText: {
     fontFamily: 'Courier New',
@@ -149,18 +141,18 @@ const styles = StyleSheet.create({
     color: 'rgb(161, 161, 161)',
   },
   forgotPassword: {
-    color: '#0099FF',
+    color: '#B3D8A8',
     textAlign: 'center',
     marginTop: 10,
     fontSize: 12,
   },
   socialContainer: {
-    marginTop: 20,
+    marginTop: 8,
     alignItems: 'center',
   },
   socialText: {
     fontSize: 12,
-    color: '#AAAAAA',
+    color: '#B3D8A8',
   },
   socialButtons: {
     flexDirection: 'row',
@@ -169,7 +161,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   socialButton: {
-    backgroundColor: '#666',
+    backgroundColor: '#B3D8A8',
     padding: 10,
     borderRadius: 50,
     width: 40,
@@ -183,7 +175,7 @@ const styles = StyleSheet.create({
   },
   agreement: {
     fontSize: 9,
-    color: '#0099FF',
+    color: '#B3D8A8',
     textAlign: 'center',
     marginTop: 15,
   },
