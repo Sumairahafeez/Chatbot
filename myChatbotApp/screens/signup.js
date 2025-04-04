@@ -86,21 +86,6 @@ const SignUpScreen = () => {
       <TouchableOpacity>
         <Text style={styles.forgotPassword}>Forgot Password?</Text>
       </TouchableOpacity>
-
-      <View style={styles.socialContainer}>
-        <Text style={styles.socialText}>Or Sign Up with</Text>
-        <View style={styles.socialButtons}>
-          <TouchableOpacity style={styles.socialButton}>
-            <Text style={styles.socialIcon}>G</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.socialButton}>
-            <Text style={styles.socialIcon}>A</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.socialButton}>
-            <Text style={styles.socialIcon}>T</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
     </View>
   );
 };
