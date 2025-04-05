@@ -1,8 +1,4 @@
-Awesome! Here's a completed version of your `README.md` with the missing parts filled in, including dependencies, build instructions, and a link placeholder for your build file (you can update it with your actual link):
 
----
-
-```markdown
 # 💬 Rule-Based Chatbot App
 
 A mobile-friendly **Rule-Based Chatbot** built using **React Native (Expo)** for the frontend and **Express.js** for the backend. This chatbot responds to predefined patterns and keywords to simulate a conversation without relying on third-party APIs.
@@ -153,9 +149,3 @@ You can download the latest build here:
 ## 👩‍💻 Author
 
 Made with ❤️ by [Sumaira Hafeez](https://github.com/Sumairahafeez)
-
----
-
-```
-
-Let me know if you're using `EAS` or `classic build` on Expo and whether your app is already uploaded somewhere so I can help you generate a proper download link or QR!
