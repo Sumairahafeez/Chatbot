@@ -20,16 +20,16 @@ A mobile-friendly **Rule-Based Chatbot** built using **React Native (Expo)** for
 ## 📸 Screenshots
 
 ### LogIn Page
-![LogIn Page](/screenshots/LogInUI.png)
+![LogIn Page](./screenshots/LogInUI.jpg)
 
 ### SignUp Page
-![SignUp Page](./screenshots/SignUpUI.png)
+![SignUp Page](./screenshots/SignUpUI.jpg)
 
 ### Home Page
-![Home Page](./screenshots/HomeUI.png)
+![Home Page](./screenshots/HomeUI.jpg)
 
 ### Chat Page
-![Chat Page](./screenshots/chatUI.png)
+![Chat Page](./screenshots/chatUI.jpg)
 
 ## 🧑‍💻 Getting Started
 
