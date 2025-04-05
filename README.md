@@ -20,7 +20,7 @@ A mobile-friendly **Rule-Based Chatbot** built using **React Native (Expo)** for
 ## 📸 Screenshots
 
 ### LogIn Page
-![LogIn Page](./screenshots/LogInUI.png)
+![LogIn Page](/screenshots/LogInUI.png)
 
 ### SignUp Page
 ![SignUp Page](./screenshots/SignUpUI.png)
